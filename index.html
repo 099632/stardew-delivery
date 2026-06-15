@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>星露谷快递生成器</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div>
+        <p class="kicker">Stardew Delivery</p>
+        <h1>星露谷快递</h1>
+      </div>
+      <span class="stamp">OPEN</span>
+    </header>
+
+    <main class="app-shell">
+      <section class="control-panel" id="filter-panel" aria-label="订单设置">
+        <header class="panel-head">
+          <span class="panel-title">筛选</span>
+          <button class="panel-toggle" id="filters-toggle" type="button" aria-label="收起筛选" title="收起筛选" aria-expanded="true" aria-controls="filters-content">
+            ›
+          </button>
+        </header>
+
+        <div class="panel-content" id="filters-content">
+          <div class="filter-block">
+            <span class="filter-label">分类</span>
+            <div class="filter-tabs category-tabs" id="category-tabs" aria-label="商品分类筛选"></div>
+          </div>
+
+          <div class="filter-block">
+            <span class="filter-label">季节</span>
+            <div class="filter-tabs season-tabs" aria-label="季节筛选">
+              <button type="button" class="filter-tab season-tab is-active" data-season="all">全部</button>
+              <button type="button" class="filter-tab season-tab" data-season="Spring">春</button>
+              <button type="button" class="filter-tab season-tab" data-season="Summer">夏</button>
+              <button type="button" class="filter-tab season-tab" data-season="Fall">秋</button>
+              <button type="button" class="filter-tab season-tab" data-season="Winter">冬</button>
+              <button type="button" class="filter-tab season-tab" data-season="GingerIsland">姜岛</button>
+            </div>
+          </div>
+
+          <div class="filter-block">
+            <span class="filter-label">购买来源</span>
+            <div class="filter-tabs source-tabs" id="source-tabs" aria-label="购买来源筛选"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-panel" aria-label="商品选择">
+        <header class="product-header">
+          <div>
+            <p class="kicker">Goods Shelf</p>
+            <h2>商品柜台</h2>
+          </div>
+          <span class="result-count" id="result-count"></span>
+        </header>
+
+        <div class="shelf-tools">
+          <div class="field-row">
+            <label for="crop-search">商品</label>
+            <input id="crop-search" type="search" placeholder="搜索种子、材料或商品" autocomplete="off" />
+          </div>
+
+          <div class="field-row compact">
+            <label for="quantity">数量</label>
+            <div class="stepper">
+              <button class="icon-button" id="minus-qty" type="button" aria-label="减少数量">-</button>
+              <input id="quantity" type="number" min="1" max="999" value="1" />
+              <button class="icon-button" id="plus-qty" type="button" aria-label="增加数量">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="crop-grid" id="crop-grid" aria-label="商品列表"></div>
+        <div class="pagination" aria-label="商品翻页">
+          <button class="icon-button page-button" id="prev-page" type="button" aria-label="上一页">‹</button>
+          <span class="page-status" id="page-status"></span>
+          <button class="icon-button page-button" id="next-page" type="button" aria-label="下一页">›</button>
+        </div>
+      </section>
+
+      <section class="preview-panel" aria-label="文案生成">
+        <div class="receipt-top">
+          <div>
+            <p class="kicker">Order Note</p>
+            <h2 id="selected-title">西红柿种子</h2>
+          </div>
+          <div class="selected-sprite">
+            <img id="selected-image" alt="" />
+          </div>
+        </div>
+
+        <div class="template-tabs" id="template-tabs" aria-label="模板选择"></div>
+
+        <div class="message-area">
+          <label class="output-label" for="message-output">生成文案</label>
+          <textarea id="message-output" spellcheck="false"></textarea>
+        </div>
+
+        <div class="action-row">
+          <button class="primary-button" id="copy-button" type="button">复制文案</button>
+          <button class="secondary-button" id="add-cart-button" type="button">加入购物车</button>
+          <button class="secondary-button" id="reset-button" type="button">重新套入</button>
+          <span class="copy-status" id="copy-status" role="status" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <aside class="side-panel" aria-label="订单侧栏">
+        <section class="purchase-panel" id="purchase-panel" aria-label="购买方式">
+          <header class="purchase-header">
+            <span class="filter-label">购买方式</span>
+            <button class="panel-toggle small" id="purchase-toggle" type="button" aria-label="收起购买方式" title="收起购买方式" aria-expanded="true" aria-controls="purchase-content">
+              ‹
+            </button>
+          </header>
+          <div class="purchase-content" id="purchase-content">
+            <div class="purchase-options" id="purchase-options"></div>
+            <p class="purchase-note" id="purchase-note"></p>
+          </div>
+        </section>
+
+        <section class="cart-panel" aria-label="购物车">
+          <header class="cart-header">
+            <span class="filter-label">购物车</span>
+            <span class="cart-count" id="cart-count">0件</span>
+          </header>
+          <div class="cart-items" id="cart-items"></div>
+          <div class="cart-actions">
+            <button class="primary-button compact-button" id="generate-cart-button" type="button">生成小票</button>
+            <button class="secondary-button compact-button" id="clear-cart-button" type="button">清空</button>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
